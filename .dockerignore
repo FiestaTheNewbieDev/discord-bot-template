@@ -1,0 +1,13 @@
+/.vscode
+
+/.git
+.gitignore
+
+.eslintrc.json
+.prettierrc
+
+/node_modules
+*.env.example
+*.env
+*.md
+LICENSE
