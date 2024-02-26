@@ -1,8 +1,7 @@
 {
     "env": {
-        "node": true,
         "es6": true,
-        "commonjs": true
+        "node": true
     },
     "extends": [
         "eslint:recommended",
