@@ -2,15 +2,16 @@ import {glob} from 'glob';
 import path from 'path';
 import {promisify} from 'util';
 import ICommand from '@/interfaces/ICommand';
+import IClient from '@/interfaces/IClient';
 
 const pGlob = promisify(glob);
 
 // !WARNING! Handlers work only if glob is version 7.2.0
 
-async function loadCommands(client, dir) {
+async function loadCommands(client: IClient, dir: string) {
     const files = await pGlob(path.join(dir, '*.ts'));
 
-    files.forEach(async commandFile => {
+    files.forEach(async (commandFile: string) => {
         const command: ICommand = await import(commandFile).then(
             module => module.default
         );
@@ -27,11 +28,11 @@ async function loadCommands(client, dir) {
 
     const subdirs = await pGlob(path.join(dir, '*/'));
 
-    subdirs.forEach(async subdir => {
+    subdirs.forEach(async (subdir: string) => {
         await loadCommands(client, subdir);
     });
 }
 
-export default async client => {
+export default async (client: IClient) => {
     await loadCommands(client, path.join(process.cwd(), 'src/commands'));
 };

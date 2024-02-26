@@ -1,4 +1,4 @@
-const eventsList = [
+const eventsList: string[] = [
     'apiRequest',
     'apiResponse',
     'applicationCommandCreate',

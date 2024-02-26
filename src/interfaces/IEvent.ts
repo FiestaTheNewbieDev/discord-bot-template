@@ -1,5 +1,7 @@
+import IClient from '@/interfaces/IClient';
+
 export default interface IEvent {
     name: string;
     once: boolean;
-    execute: (client, ...args) => void;
+    execute: (client: IClient, ...args) => void;
 }

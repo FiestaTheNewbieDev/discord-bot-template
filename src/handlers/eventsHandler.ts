@@ -3,15 +3,16 @@ import path from 'path';
 import {promisify} from 'util';
 import IEvent from '@/interfaces/IEvent';
 import eventsList from '@/utils/eventsList';
+import IClient from '@/interfaces/IClient';
 
 const pGlob = promisify(glob);
 
 // !WARNING! Handlers work only if glob is version 7.2.0
 
-async function loadEvents(client, dir) {
+async function loadEvents(client: IClient, dir: string) {
     const files = await pGlob(path.join(dir, '*.ts'));
 
-    files.forEach(async eventFile => {
+    files.forEach(async (eventFile: string) => {
         const event: IEvent = await import(eventFile).then(
             module => module.default
         );
@@ -30,11 +31,11 @@ async function loadEvents(client, dir) {
 
     const subdirs = await pGlob(path.join(dir, '*/'));
 
-    subdirs.forEach(async subdir => {
+    subdirs.forEach(async (subdir: string) => {
         await loadEvents(client, subdir);
     });
 }
 
-export default async client => {
+export default async (client: IClient) => {
     await loadEvents(client, path.join(process.cwd(), 'src/events'));
 };

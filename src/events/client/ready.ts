@@ -8,12 +8,10 @@ dotenv.config();
 export default {
     name: 'ready',
     once: true,
-    async execute(client) {
+    execute(client) {
         console.log(chalk.green(`\n${client.user.username} ready\n`));
 
-        const devGuild = await client.guilds.cache.get(
-            process.env.DEV_GUILD_ID
-        );
+        const devGuild = client.guilds.cache.get(process.env.DEV_GUILD_ID);
         devGuild.commands.set(
             client.commands
                 .filter((command: ICommand) => command.runSlash)

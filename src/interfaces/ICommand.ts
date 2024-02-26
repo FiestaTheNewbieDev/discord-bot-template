@@ -1,3 +1,5 @@
+import IClient from '@/interfaces/IClient';
+
 export default interface ICommand {
     name: string;
     description: string;
@@ -9,6 +11,6 @@ export default interface ICommand {
             type: number;
         }
     ];
-    run: (client, message, args) => void;
-    runSlash?: (client, interaction) => void;
+    run: (client: IClient, message, args) => void;
+    runSlash?: (client: IClient, interaction) => void;
 }

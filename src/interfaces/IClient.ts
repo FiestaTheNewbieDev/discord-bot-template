@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Client, Collection} from 'discord.js';
+import ICommand from './ICommand';
 
 export default interface IClient extends Client {
-    commands: Collection<any, any>;
+    commands: Collection<string, ICommand>;
 }

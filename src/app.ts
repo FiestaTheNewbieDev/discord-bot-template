@@ -5,7 +5,7 @@ import IClient from '@/interfaces/IClient';
 
 dotenv.config();
 
-const client = new Client({
+const client: IClient = new Client({
     intents: [
         IntentsBitField.Flags.Guilds,
         IntentsBitField.Flags.GuildMessages,
