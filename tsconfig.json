@@ -1,7 +1,5 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
-        "module": "commonjs",
         "outDir": "./build",
         "rootDir": "./src",
         "baseUrl": ".",
