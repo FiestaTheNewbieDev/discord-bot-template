@@ -9,7 +9,7 @@ const pGlob = promisify(glob);
 // !WARNING! Handlers work only if glob is version 7.2.0
 
 async function loadCommands(client: IClient, dir: string) {
-    const files = await pGlob(path.join(dir, '*.ts'));
+    const files = await pGlob(path.join(dir, `*${path.extname(__filename)}`));
 
     files.forEach(async (commandFile: string) => {
         const command: ICommand = await import(commandFile).then(
@@ -33,6 +33,21 @@ async function loadCommands(client: IClient, dir: string) {
     });
 }
 
-export default async (client: IClient) => {
-    await loadCommands(client, path.join(process.cwd(), 'src/commands'));
-};
+export default async function register(client: IClient) {
+    switch (path.extname(__filename)) {
+        case '.ts':
+            await loadCommands(
+                client,
+                path.join(process.cwd(), 'src/commands')
+            );
+            break;
+        case '.js':
+            await loadCommands(
+                client,
+                path.join(process.cwd(), 'build/commands')
+            );
+            break;
+        default:
+            throw new Error('Unknown file extension');
+    }
+}

@@ -1,6 +1,11 @@
+/* eslint-disable import/first */
+require('module-alias/register');
+
 import chalk from 'chalk';
 import {Client, Collection, IntentsBitField} from 'discord.js';
 import dotenv from 'dotenv';
+import * as eventsHandler from '@/handlers/eventsHandler';
+import * as commandsHandler from '@/handlers/commandsHandler';
 import IClient from '@/interfaces/IClient';
 
 dotenv.config();
@@ -15,14 +20,8 @@ const client: IClient = new Client({
 
 client.commands = new Collection();
 
-import('./handlers/eventsHandler').then(module => {
-    const eventsHandler = module.default;
-    eventsHandler(client);
-});
-import('./handlers/commandsHandler').then(module => {
-    const commandsHandler = module.default;
-    commandsHandler(client);
-});
+eventsHandler.default(client);
+commandsHandler.default(client);
 
 // !WARNING! Chalk work only if version 4.1.2
 

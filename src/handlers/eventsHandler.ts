@@ -10,7 +10,7 @@ const pGlob = promisify(glob);
 // !WARNING! Handlers work only if glob is version 7.2.0
 
 async function loadEvents(client: IClient, dir: string) {
-    const files = await pGlob(path.join(dir, '*.ts'));
+    const files = await pGlob(path.join(dir, `*${path.extname(__filename)}`));
 
     files.forEach(async (eventFile: string) => {
         const event: IEvent = await import(eventFile).then(
@@ -36,6 +36,15 @@ async function loadEvents(client: IClient, dir: string) {
     });
 }
 
-export default async (client: IClient) => {
-    await loadEvents(client, path.join(process.cwd(), 'src/events'));
-};
+export default async function register(client: IClient) {
+    switch (path.extname(__filename)) {
+        case '.ts':
+            await loadEvents(client, path.join(process.cwd(), 'src/events'));
+            break;
+        case '.js':
+            await loadEvents(client, path.join(process.cwd(), 'build/events'));
+            break;
+        default:
+            throw new Error('Unknown file extension');
+    }
+}
