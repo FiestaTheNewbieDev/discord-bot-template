@@ -1,11 +1,12 @@
 /* eslint-disable import/first */
-require('module-alias/register');
+// eslint-disable-next-line global-require
+if (process.env.NODE_ENV === 'production') require('module-alias/register');
 
 import chalk from 'chalk';
 import {Client, Collection, IntentsBitField} from 'discord.js';
 import dotenv from 'dotenv';
-import * as eventsHandler from '@/handlers/eventsHandler';
-import * as commandsHandler from '@/handlers/commandsHandler';
+import registerEvents from '@/handlers/eventsHandler';
+import registerCommands from '@/handlers/commandsHandler';
 import IClient from '@/interfaces/IClient';
 
 dotenv.config();
@@ -20,8 +21,8 @@ const client: IClient = new Client({
 
 client.commands = new Collection();
 
-eventsHandler.default(client);
-commandsHandler.default(client);
+registerEvents(client);
+registerCommands(client);
 
 // !WARNING! Chalk work only if version 4.1.2
 

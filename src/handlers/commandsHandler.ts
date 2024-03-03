@@ -34,6 +34,23 @@ async function loadCommands(client: IClient, dir: string) {
 }
 
 export default async function register(client: IClient) {
+    switch (process.env.NODE_ENV) {
+        case 'development':
+            await loadCommands(
+                client,
+                path.join(process.cwd(), 'src/commands')
+            );
+            break;
+        case 'production':
+            await loadCommands(
+                client,
+                path.join(process.cwd(), 'build/commands')
+            );
+            break;
+        default:
+            throw new Error('Unknown environment');
+    }
+    /*
     switch (path.extname(__filename)) {
         case '.ts':
             await loadCommands(
@@ -50,4 +67,5 @@ export default async function register(client: IClient) {
         default:
             throw new Error('Unknown file extension');
     }
+    */
 }
