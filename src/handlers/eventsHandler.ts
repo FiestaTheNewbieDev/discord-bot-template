@@ -10,7 +10,12 @@ const pGlob = promisify(glob);
 // !WARNING! Handlers work only if glob is version 7.2.0
 
 async function loadEvents(client: IClient, dir: string) {
-    const files = await pGlob(path.join(dir, `*${path.extname(__filename)}`));
+    const files = await pGlob(
+        path.join(
+            dir,
+            `*${process.env.NODE_ENV === 'development' ? '.ts' : '.js'}`
+        )
+    );
 
     files.forEach(async (eventFile: string) => {
         const event: IEvent = await import(eventFile).then(
